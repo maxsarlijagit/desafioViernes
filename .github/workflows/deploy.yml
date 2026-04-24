@@ -1,0 +1,63 @@
+name: Deploy & Test
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Verify HTML exists
+        run: |
+          echo "=== Checking files exist ==="
+          ls -la
+          test -f landing.html && echo "✅ landing.html found"
+          test -f dashboard-config.json && echo "✅ dashboard-config.json found"
+          test -f README-dashboard.md && echo "✅ README-dashboard.md found"
+          
+      - name: HTML Validation
+        run: |
+          echo "=== HTML Validation ==="
+          # Check basic HTML structure
+          grep -q "<html" landing.html && echo "✅ HTML tag found"
+          grep -q "<head>" landing.html && echo "✅ HEAD tag found"
+          grep -q "<body>" landing.html && echo "✅ BODY tag found"
+          grep -q "</html>" landing.html && echo "✅ Closing HTML tag found"
+          
+      - name: Check for required content
+        run: |
+          echo "=== Content Check ==="
+          grep -qi "DESAFÍO VIERNES" landing.html && echo "✅ Title found"
+          grep -qi "team\|equipo" landing.html && echo "✅ Team section found"
+          grep -qi "project\|proyecto" landing.html && echo "✅ Project section found"
+          
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
