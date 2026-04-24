@@ -5,18 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Desafío Viernes — Portfolio</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Noto+Serif+SC:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
     
     :root {
-      --void: #0a0612;
-      --deep-purple: #1a0a2e;
-      --midnight: #2d1b4e;
-      --etherial: #4a2c7a;
-      --lunar: #7b4dbf;
-      --starlight: #c9a8ff;
-      --gold: #d4af37;
-      --gold-light: #f4e4a6;
-      --silver: #a8b4c4;
+      --bg-dark: #0d0d0d;
+      --bg-card: #1a1a2e;
+      --accent: #00ff88;
+      --accent-dim: #00cc6a;
+      --text: #e0e0e0;
+      --text-dim: #888;
+      --pixel-border: #333;
     }
     
     * {
@@ -26,276 +24,273 @@
     }
     
     body {
-      font-family: 'Noto Serif SC', 'Cinzel', serif;
-      background: var(--void);
-      color: var(--silver);
+      font-family: 'VT323', monospace;
+      background: var(--bg-dark);
+      color: var(--text);
+      line-height: 1.6;
       min-height: 100vh;
       background-image: 
-        radial-gradient(ellipse at 50% 0%, rgba(123, 77, 191, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
-        radial-gradient(ellipse at 20% 60%, rgba(74, 44, 122, 0.1) 0%, transparent 40%);
-    }
-    
-    .stars {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-    }
-    
-    .star {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: var(--starlight);
-      border-radius: 50%;
-      animation: twinkle 3s infinite;
-    }
-    
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.3; }
-      50% { opacity: 1; }
+        linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+      background-size: 20px 20px;
+      overflow-x: hidden;
     }
     
     .container {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 3rem 2rem;
-      position: relative;
-      z-index: 1;
+      padding: 2rem;
     }
     
     header {
       text-align: center;
       padding: 4rem 0;
-      position: relative;
-    }
-    
-    .ornament-top {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-    
-    .ornament-line {
-      width: 80px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
-    
-    .ornament-diamond {
-      width: 8px;
-      height: 8px;
-      background: var(--gold);
-      transform: rotate(45deg);
+      border-bottom: 4px solid var(--accent);
+      margin-bottom: 3rem;
     }
     
     h1 {
-      font-family: 'Cinzel', serif;
-      font-size: 3.5rem;
-      font-weight: 700;
-      color: var(--gold-light);
-      text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
-      letter-spacing: 12px;
-      margin-bottom: 0.5rem;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 2.5rem;
+      color: var(--accent);
+      text-shadow: 4px 4px 0 #004422;
+      margin-bottom: 1rem;
+      letter-spacing: 2px;
     }
     
     .subtitle {
-      font-size: 1.1rem;
-      color: var(--starlight);
-      letter-spacing: 6px;
-      text-transform: uppercase;
+      font-size: 1.5rem;
+      color: var(--text-dim);
     }
     
-    .divider {
-      display: flex;
-      justify-content: center;
-      margin: 2rem auto;
+    /* MASCOTE INTERACTIVO */
+    .mascot-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
     }
     
-    .divider svg {
-      width: 200px;
-      height: 30px;
-      fill: var(--gold);
-      opacity: 0.6;
+    .mascot {
+      width: 80px;
+      height: 80px;
+      cursor: pointer;
+      transition: transform 0.1s;
+      filter: drop-shadow(0 0 10px var(--accent));
     }
     
-    .section {
-      margin: 4rem 0;
+    .mascot:hover {
+      transform: scale(1.1);
+    }
+    
+    .mascot-bubble {
+      position: absolute;
+      bottom: 90px;
+      right: 0;
+      background: var(--bg-card);
+      border: 2px solid var(--accent);
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-size: 1rem;
+      max-width: 180px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s;
+      pointer-events: none;
+    }
+    
+    .mascot-bubble.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .mascot-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      right: 30px;
+      border-width: 10px 10px 0;
+      border-style: solid;
+      border-color: var(--accent) transparent transparent;
+    }
+    
+    /* Pixel art character */
+    .pixel-pet {
+      image-rendering: pixelated;
+      animation: bounce 1s infinite;
+    }
+    
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    
+    @keyframes wave {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-10deg); }
+      75% { transform: rotate(10deg); }
+    }
+    
+    @keyframes sleep {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .pixel-divider {
+      height: 8px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--accent) 0px,
+        var(--accent) 16px,
+        transparent 16px,
+        transparent 32px
+      );
+      margin: 2rem 0;
     }
     
     .section-title {
-      text-align: center;
-      margin-bottom: 2.5rem;
-    }
-    
-    .section-title h2 {
-      font-family: 'Cinzel', serif;
-      font-size: 1.8rem;
-      color: var(--gold);
-      letter-spacing: 8px;
-      display: inline-block;
-      position: relative;
-    }
-    
-    .section-title h2::before,
-    .section-title h2::after {
-      content: '✧';
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--etherial);
-    }
-    
-    .section-title h2::before {
-      left: -40px;
-    }
-    
-    .section-title h2::after {
-      right: -40px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin: 3rem 0 1.5rem;
+      border-left: 4px solid var(--accent);
+      padding-left: 1rem;
     }
     
     .team-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.5rem;
+      margin-top: 2rem;
     }
     
     .member-card {
-      background: linear-gradient(135deg, rgba(45, 27, 78, 0.6), rgba(26, 10, 46, 0.8));
-      border: 1px solid var(--etherial);
+      background: var(--bg-card);
+      border: 4px solid var(--pixel-border);
       padding: 1.5rem;
       position: relative;
-      transition: all 0.4s ease;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    
+    .member-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
     }
     
     .member-card::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      opacity: 0;
-      transition: opacity 0.4s;
-    }
-    
-    .member-card:hover {
-      border-color: var(--gold);
-      transform: translateY(-4px);
-      box-shadow: 0 10px 40px rgba(123, 77, 191, 0.2);
-    }
-    
-    .member-card:hover::before {
-      opacity: 1;
+      top: 8px;
+      right: 8px;
+      width: 12px;
+      height: 12px;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
     }
     
     .member-name {
-      font-family: 'Cinzel', serif;
-      font-size: 1.1rem;
-      color: var(--gold-light);
-      margin-bottom: 0.25rem;
-    }
-    
-    .member-role {
-      font-size: 0.85rem;
-      color: var(--lunar);
-      text-transform: uppercase;
-      letter-spacing: 2px;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 0.7rem;
+      color: var(--text);
       margin-bottom: 0.5rem;
     }
     
+    .member-role {
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    
+    .member-github {
+      font-size: 1rem;
+      color: var(--text-dim);
+    }
+    
     .member-github a {
-      color: var(--silver);
+      color: var(--text-dim);
       text-decoration: none;
-      font-size: 0.9rem;
-      transition: color 0.3s;
     }
     
     .member-github a:hover {
-      color: var(--starlight);
+      color: var(--accent);
     }
     
     .project-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
       gap: 2rem;
+      margin-top: 2rem;
     }
     
     .project-card {
-      background: linear-gradient(145deg, rgba(45, 27, 78, 0.5), rgba(26, 10, 46, 0.7));
-      border: 1px solid var(--etherial);
+      background: var(--bg-card);
+      border: 4px solid var(--pixel-border);
       padding: 2rem;
       position: relative;
-      overflow: hidden;
     }
     
-    .project-card::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
-      animation: rotate 20s linear infinite;
-    }
-    
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+    .project-card:hover {
+      border-color: var(--accent);
     }
     
     .project-title {
-      font-family: 'Cinzel', serif;
-      font-size: 1.4rem;
-      color: var(--gold-light);
-      margin-bottom: 0.75rem;
-      position: relative;
-      z-index: 1;
+      font-family: 'Press Start 2P', cursive;
+      font-size: 1rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
     }
     
     .project-desc {
-      color: #999;
-      font-size: 0.95rem;
-      line-height: 1.8;
+      font-size: 1.2rem;
+      color: var(--text-dim);
       margin-bottom: 1rem;
-      position: relative;
-      z-index: 1;
     }
     
     .project-status {
       display: inline-block;
-      padding: 0.4rem 1rem;
-      font-size: 0.8rem;
-      letter-spacing: 2px;
-      border: 1px solid;
-      position: relative;
-      z-index: 1;
+      padding: 0.25rem 0.75rem;
+      font-size: 1rem;
+      border: 2px solid;
+      margin-top: 1rem;
     }
     
     .status-alpha {
-      border-color: var(--lunar);
-      color: var(--lunar);
+      border-color: #ffaa00;
+      color: #ffaa00;
+    }
+    
+    .status-stable {
+      border-color: var(--accent);
+      color: var(--accent);
     }
     
     .status-planning {
-      border-color: var(--gold);
-      color: var(--gold);
+      border-color: #8888ff;
+      color: #8888ff;
     }
     
-    .stats-row {
+    footer {
+      text-align: center;
+      padding: 3rem 0;
+      margin-top: 4rem;
+      border-top: 4px solid var(--pixel-border);
+    }
+    
+    .pixel-heart {
+      color: #ff4444;
+      animation: pulse 1s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .stats {
       display: flex;
       justify-content: center;
-      gap: 4rem;
-      padding: 2rem;
-      margin-bottom: 2rem;
+      gap: 3rem;
+      margin: 2rem 0;
     }
     
     .stat {
@@ -303,173 +298,210 @@
     }
     
     .stat-number {
-      font-family: 'Cinzel', serif;
-      font-size: 3rem;
-      color: var(--gold);
-      text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+      font-family: 'Press Start 2P', cursive;
+      font-size: 2rem;
+      color: var(--accent);
     }
     
     .stat-label {
-      font-size: 0.85rem;
-      color: var(--starlight);
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: var(--text-dim);
     }
     
-    footer {
-      text-align: center;
-      padding: 3rem 0;
-      margin-top: 4rem;
-      border-top: 1px solid var(--midnight);
+    /* Click effects */
+    .click-burst {
+      position: absolute;
+      pointer-events: none;
+      animation: burst 0.5s forwards;
     }
     
-    footer p {
-      color: #555;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
-    }
-    
-    .floating {
-      animation: float 6s ease-in-out infinite;
-    }
-    
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+    @keyframes burst {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <div class="stars" id="stars"></div>
-  
-  <script>
-    for (let i = 0; i < 50; i++) {
-      const star = document.createElement('div');
-      star.className = 'star';
-      star.style.left = Math.random() * 100 + '%';
-      star.style.top = Math.random() * 100 + '%';
-      star.style.animationDelay = Math.random() * 3 + 's';
-      document.getElementById('stars').appendChild(star);
-    }
-  </script>
+  <!-- MASCOTE INTERACTIVO -->
+  <div class="mascot-container">
+    <div class="mascot-bubble" id="bubble">¡Che, hola! 👋</div>
+    <svg class="mascot pixel-pet" id="mascot" viewBox="0 0 16 16" onclick="interact()">
+      <!-- Pixel art cat/creature -->
+      <rect x="4" y="4" width="8" height="8" fill="#00ff88"/>
+      <rect x="3" y="5" width="2" height="2" fill="#00ff88"/>
+      <rect x="11" y="5" width="2" height="2" fill="#00ff88"/>
+      <rect x="5" y="6" width="2" height="2" fill="#0d0d0d"/>
+      <rect x="9" y="6" width="2" height="2" fill="#0d0d0d"/>
+      <rect x="7" y="8" width="2" height="1" fill="#0d0d0d"/>
+      <rect x="4" y="10" width="2" height="2" fill="#00ff88"/>
+      <rect x="10" y="10" width="2" height="2" fill="#00ff88"/>
+      <rect x="5" y="12" width="2" height="2" fill="#00ff88"/>
+      <rect x="9" y="12" width="2" height="2" fill="#00ff88"/>
+    </svg>
+  </div>
 
   <div class="container">
     <header>
-      <div class="ornament-top">
-        <span class="ornament-line"></span>
-        <span class="ornament-diamond"></span>
-        <span class="ornament-line"></span>
-      </div>
       <h1>DESAFÍO VIERNES</h1>
-      <p class="subtitle">Crónicas del Portfolio</p>
-      <div class="divider">
-        <svg viewBox="0 0 200 30">
-          <path d="M0,15 L70,15 M130,15 L200,15 M85,5 L100,15 L115,5 M95,15 L100,25 L105,15" 
-                stroke="currentColor" fill="none" stroke-width="1"/>
-        </svg>
+      <p class="subtitle">Portfolio de proyectos semanales</p>
+      <div class="pixel-divider"></div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-number">11</div>
+          <div class="stat-label">INTEGRANTES</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">2</div>
+          <div class="stat-label">PROYECTOS</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">∞</div>
+          <div class="stat-label">POSIBILIDADES</div>
+        </div>
       </div>
     </header>
 
-    <div class="stats-row">
-      <div class="stat">
-        <div class="stat-number">拾壹</div>
-        <div class="stat-label">Integrantes</div>
-      </div>
-      <div class="stat">
-        <div class="stat-number">貳</div>
-        <div class="stat-label">Proyectos</div>
-      </div>
-      <div class="stat">
-        <div class="stat-number">∞</div>
-        <div class="stat-label">Posibilidades</div>
-      </div>
-    </div>
-
-    <section class="section">
-      <div class="section-title">
-        <h2>ALMA COLECTIVA</h2>
-      </div>
+    <section>
+      <h2 class="section-title">> EQUIPO</h2>
       <div class="team-grid">
-        <div class="member-card floating" style="animation-delay: 0s;">
+        <div class="member-card">
           <div class="member-name">Igor Gopkalo Streiff</div>
-          <div class="member-role">Guía Espiritual</div>
+          <div class="member-role">PM</div>
           <div class="member-github"><a href="https://github.com/Igor-Streiff" target="_blank">@Igor-Streiff</a></div>
         </div>
-        <div class="member-card floating" style="animation-delay: 0.5s;">
+        <div class="member-card">
           <div class="member-name">Max Sarlija</div>
-          <div class="member-role">Forjador de Códices</div>
+          <div class="member-role">Developer</div>
           <div class="member-github"><a href="https://github.com/maxsarlija" target="_blank">@maxsarlija</a></div>
         </div>
-        <div class="member-card floating" style="animation-delay: 1s;">
+        <div class="member-card">
           <div class="member-name">Manuel Mejia</div>
-          <div class="member-role">Forjador de Códices</div>
+          <div class="member-role">Developer</div>
           <div class="member-github"><a href="https://github.com/pulpt37" target="_blank">@pulpt37</a></div>
         </div>
-        <div class="member-card floating" style="animation-delay: 1.5s;">
+        <div class="member-card">
           <div class="member-name">Mariano Zulueta</div>
-          <div class="member-role">Artista Técnico</div>
+          <div class="member-role">Tech Artist</div>
           <div class="member-github"><a href="https://github.com/mariano9700" target="_blank">@mariano9700</a></div>
         </div>
-        <div class="member-card floating" style="animation-delay: 2s;">
+        <div class="member-card">
           <div class="member-name">Kalil Fiat</div>
-          <div class="member-role">Artista Técnico</div>
+          <div class="member-role">Tech Artist</div>
           <div class="member-github"><a href="https://github.com/kalil94" target="_blank">@kalil94</a></div>
         </div>
-        <div class="member-card floating" style="animation-delay: 2.5s;">
+        <div class="member-card">
           <div class="member-name">Manuel Castellani</div>
-          <div class="member-role">Artista Técnico</div>
+          <div class="member-role">Tech Artist</div>
           <div class="member-github"><a href="https://github.com/manucastellani" target="_blank">@manucastellani</a></div>
         </div>
-        <div class="member-card floating" style="animation-delay: 3s;">
+        <div class="member-card">
           <div class="member-name">Mauricio van der Wildt</div>
-          <div class="member-role">Artista Técnico</div>
+          <div class="member-role">Tech Artist</div>
           <div class="member-github"><a href="https://github.com/ElkronAiken" target="_blank">@ElkronAiken</a></div>
         </div>
-        <div class="member-card floating" style="animation-delay: 3.5s;">
+        <div class="member-card">
           <div class="member-name">Facundo Villarreal</div>
-          <div class="member-role">Artista Técnico</div>
+          <div class="member-role">Tech Artist</div>
           <div class="member-github"><a href="https://github.com/facu041294" target="_blank">@facu041294</a></div>
         </div>
-        <div class="member-card floating" style="animation-delay: 4s;">
+        <div class="member-card">
           <div class="member-name">Franco Ferrarello</div>
-          <div class="member-role">Artista Visual</div>
+          <div class="member-role">Artist</div>
           <div class="member-github"><a href="https://github.com/fferrarello" target="_blank">@fferrarello</a></div>
         </div>
-        <div class="member-card floating" style="animation-delay: 4.5s;">
+        <div class="member-card">
           <div class="member-name">Alejandro Arteaga</div>
-          <div class="member-role">Artista Visual</div>
+          <div class="member-role">Artist</div>
           <div class="member-github"><a href="https://github.com/arteaga.rey" target="_blank">@arteaga.rey</a></div>
         </div>
-        <div class="member-card floating" style="animation-delay: 5s;">
+        <div class="member-card">
           <div class="member-name">Mariano Penovi</div>
-          <div class="member-role">Artista Técnico</div>
+          <div class="member-role">Tech Artist</div>
           <div class="member-github"><a href="https://github.com/marianopenovi" target="_blank">@marianopenovi</a></div>
         </div>
       </div>
     </section>
 
-    <section class="section">
-      <div class="section-title">
-        <h2>CRÓNICAS DEL DESTINO</h2>
-      </div>
+    <section>
+      <h2 class="section-title">> PROYECTOS</h2>
       <div class="project-grid">
         <div class="project-card">
-          <div class="project-title">⚔ THE OFFICE</div>
-          <div class="project-desc">Una oficina virtual 2D multiplayer dentro de Discord. Los traveler(se) mueven por un mapa tile-based con zonas de trabajo, música y minijuegos.</div>
+          <div class="project-title">THE OFFICE</div>
+          <div class="project-desc">Oficina virtual 2D multiplayer dentro de Discord. Tu personaje se mueve por un mapa tile-based con zonas de trabajo, música y minijuegos.</div>
           <span class="project-status status-alpha">ALPHA</span>
         </div>
         <div class="project-card">
-          <div class="project-title">⚔ NEXUS DASHBOARD</div>
-          <div class="project-desc">Centro de control místico para el equipo. Tool Grid, Synergy Map y Dev-Pulse para visualizar el progreso y las conexiones del destino.</div>
-          <span class="project-status status-planning">DESTINO</span>
+          <div class="project-title">NEXUS DASHBOARD</div>
+          <div class="project-desc">Centro de control industrial para el equipo. Tool Grid, Synergy Map y Dev-Pulse para visualizar progreso y sinergias.</div>
+          <span class="project-status status-planning">PLANNING</span>
         </div>
       </div>
     </section>
 
     <footer>
-      <p>贰零贰陆 — Max Sarlija Academia // Los libros del destino se escriben</p>
+      <p>Hecho con <span class="pixel-heart">♥</span> por el equipo de Desafío Viernes</p>
+      <p style="color: var(--text-dim); margin-top: 1rem;">2026 — Max Sarlija Academy</p>
     </footer>
   </div>
+
+  <script>
+    const phrases = [
+      "¡Che, hola! 👋",
+      "¿Cómo va todo? 😺",
+      "¡Mirá eso! ✨",
+      "¿Necesitás ayuda? 🤔",
+      "¡Qué bueno que estás! 🎮",
+      "Dale, seguí scrollando 📜",
+      "¡Épico! 🔥",
+      "¿Te parece si descansás? ☕",
+      "¡Weon, está buenísimo! 🧉",
+      "Che, ¿viste el proyecto? 👀",
+      "¡Vamos que se puede! 💪",
+      "¿Querés un mate? 🍵"
+    ];
+    
+    const bubble = document.getElementById('bubble');
+    const mascot = document.getElementById('mascot');
+    let clickCount = 0;
+    
+    function interact() {
+      clickCount++;
+      
+      // Random phrase
+      const phrase = phrases[Math.floor(Math.random() * phrases.length)];
+      bubble.textContent = phrase;
+      bubble.classList.add('show');
+      
+      // Animation
+      mascot.style.animation = 'wave 0.3s';
+      setTimeout(() => {
+        mascot.style.animation = 'bounce 1s infinite';
+      }, 300);
+      
+      // Hide bubble after 3 seconds
+      setTimeout(() => {
+        bubble.classList.remove('show');
+      }, 3000);
+      
+      // Special at 10 clicks
+      if (clickCount === 10) {
+        bubble.textContent = "¡Ya me conocés bien! 🎉";
+        bubble.classList.add('show');
+      }
+    }
+    
+    // Random interactions
+    setInterval(() => {
+      if (Math.random() < 0.3 && !bubble.classList.contains('show')) {
+        const phrase = phrases[Math.floor(Math.random() * phrases.length)];
+        bubble.textContent = phrase;
+        bubble.classList.add('show');
+        
+        setTimeout(() => {
+          bubble.classList.remove('show');
+        }, 4000);
+      }
+    }, 10000);
+  </script>
 </body>
 </html>
