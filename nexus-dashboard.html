@@ -7,11 +7,7 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
     
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     
     :root {
       --void: #050508;
@@ -36,7 +32,6 @@
         radial-gradient(ellipse at 80% 20%, rgba(255, 0, 170, 0.05) 0%, transparent 50%);
     }
     
-    /* Scanlines */
     body::before {
       content: '';
       position: fixed;
@@ -44,22 +39,12 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0, 0, 0, 0.1) 2px,
-        rgba(0, 0, 0, 0.1) 4px
-      );
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.1) 2px, rgba(0, 0, 0, 0.1) 4px);
       pointer-events: none;
       z-index: 9999;
     }
     
-    .container {
-      max-width: 1600px;
-      margin: 0 auto;
-      padding: 1rem;
-    }
+    .container { max-width: 1600px; margin: 0 auto; padding: 1rem; }
     
     header {
       display: flex;
@@ -80,18 +65,8 @@
       letter-spacing: 4px;
     }
     
-    .status-bar {
-      display: flex;
-      gap: 2rem;
-      font-size: 0.8rem;
-    }
-    
-    .status-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
+    .status-bar { display: flex; gap: 2rem; font-size: 0.8rem; }
+    .status-item { display: flex; align-items: center; gap: 0.5rem; }
     .status-dot {
       width: 8px;
       height: 8px;
@@ -100,18 +75,9 @@
       animation: blink 2s infinite;
     }
     
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
     
-    /* Dashboard Grid */
-    .dashboard {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-template-rows: auto auto;
-      gap: 1rem;
-    }
+    .dashboard { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
     
     .panel {
       background: var(--panel);
@@ -140,21 +106,11 @@
       gap: 0.5rem;
     }
     
-    .panel-title::before {
-      content: '▶';
-      font-size: 0.6rem;
-    }
+    .panel-title::before { content: '▶'; font-size: 0.6rem; }
     
-    /* Tool Grid */
-    .tool-grid {
-      grid-column: 1 / 3;
-    }
+    .tool-grid { grid-column: 1 / 3; }
     
-    .repo-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1rem;
-    }
+    .repo-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
     
     .repo-card {
       background: var(--panel-light);
@@ -169,47 +125,16 @@
       box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
     }
     
-    .repo-name {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.9rem;
-      color: var(--text-bright);
-      margin-bottom: 0.5rem;
-    }
-    
-    .repo-desc {
-      font-size: 0.8rem;
-      color: var(--text);
-      margin-bottom: 0.5rem;
-      height: 40px;
-      overflow: hidden;
-    }
-    
-    .repo-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.7rem;
-    }
-    
-    .repo-lang {
-      color: var(--magenta);
-    }
-    
-    .repo-status {
-      padding: 2px 8px;
-      border: 1px solid;
-      font-size: 0.6rem;
-    }
-    
+    .repo-name { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: var(--text-bright); margin-bottom: 0.5rem; }
+    .repo-desc { font-size: 0.8rem; color: var(--text); margin-bottom: 0.5rem; height: 40px; overflow: hidden; }
+    .repo-meta { display: flex; justify-content: space-between; font-size: 0.7rem; }
+    .repo-lang { color: var(--magenta); }
+    .repo-status { padding: 2px 8px; border: 1px solid; font-size: 0.6rem; }
     .status-alpha { border-color: #ffaa00; color: #ffaa00; }
     .status-stable { border-color: var(--green); color: var(--green); }
     .status-planning { border-color: var(--cyan); color: var(--cyan); }
     
-    /* Synergy Map */
-    .synergy-map {
-      grid-column: 3;
-      grid-row: 1 / 3;
-      min-height: 500px;
-    }
+    .synergy-map { grid-column: 3; grid-row: 1 / 3; min-height: 500px; }
     
     .map-container {
       background: var(--panel-light);
@@ -236,12 +161,7 @@
       text-align: center;
     }
     
-    .node:hover {
-      transform: scale(1.2);
-      border-color: var(--magenta);
-      box-shadow: 0 0 20px var(--magenta);
-    }
-    
+    .node:hover { transform: scale(1.2); border-color: var(--magenta); box-shadow: 0 0 20px var(--magenta); }
     .node-pm { border-color: var(--gold); }
     .node-dev { border-color: var(--cyan); }
     .node-ta { border-color: var(--magenta); }
@@ -255,15 +175,8 @@
       opacity: 0.5;
     }
     
-    /* Dev Pulse */
-    .dev-pulse {
-      grid-column: 1 / 3;
-    }
-    
-    .pulse-feed {
-      max-height: 300px;
-      overflow-y: auto;
-    }
+    .dev-pulse { grid-column: 1 / 3; }
+    .pulse-feed { max-height: 300px; overflow-y: auto; }
     
     .pulse-item {
       display: flex;
@@ -273,117 +186,43 @@
       animation: slideIn 0.3s;
     }
     
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateX(-20px); }
-      to { opacity: 1; transform: translateX(0); }
-    }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
     
-    .pulse-avatar {
-      width: 40px;
-      height: 40px;
+    .pulse-avatar { width: 40px; height: 40px; background: var(--panel-light); border: 1px solid var(--cyan-dim); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .pulse-content { flex: 1; }
+    .pulse-author { font-size: 0.8rem; color: var(--cyan); margin-bottom: 0.25rem; }
+    .pulse-text { font-size: 0.75rem; color: var(--text); }
+    .pulse-time { font-size: 0.6rem; color: #555; }
+    
+    .stats-panel { grid-column: 1 / 4; }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+    .stat-box { background: var(--panel-light); border: 1px solid #333; padding: 1rem; text-align: center; }
+    .stat-value { font-family: 'Orbitron', sans-serif; font-size: 2rem; color: var(--cyan); }
+    .stat-label { font-size: 0.7rem; color: var(--text); text-transform: uppercase; }
+    
+    .team-panel { grid-column: 1 / 3; }
+    .team-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+    .team-member { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem; background: var(--panel-light); border: 1px solid #222; font-size: 0.8rem; }
+    .team-avatar { width: 24px; height: 24px; background: var(--cyan-dim); border-radius: 50%; }
+    .team-role { font-size: 0.6rem; color: var(--text); }
+    
+    .activity-panel { grid-column: 1 / 4; }
+    .activity-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+    
+    .activity-item {
       background: var(--panel-light);
-      border: 1px solid var(--cyan-dim);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-    }
-    
-    .pulse-content {
-      flex: 1;
-    }
-    
-    .pulse-author {
-      font-size: 0.8rem;
-      color: var(--cyan);
-      margin-bottom: 0.25rem;
-    }
-    
-    .pulse-text {
-      font-size: 0.75rem;
-      color: var(--text);
-    }
-    
-    .pulse-time {
-      font-size: 0.6rem;
-      color: #555;
-    }
-    
-    /* Stats */
-    .stats-panel {
-      grid-column: 1 / 4;
-    }
-    
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-    }
-    
-    .stat-box {
-      background: var(--panel-light);
+      padding: 0.75rem;
       border: 1px solid #333;
-      padding: 1rem;
-      text-align: center;
     }
     
-    .stat-value {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2rem;
-      color: var(--cyan);
-    }
+    .activity-user { font-size: 0.75rem; color: var(--cyan); margin-bottom: 0.25rem; }
+    .activity-repo { font-size: 0.7rem; color: var(--text-bright); }
+    .activity-desc { font-size: 0.65rem; color: var(--text); margin-top: 0.25rem; }
+    .activity-time { font-size: 0.55rem; color: #555; margin-top: 0.25rem; }
     
-    .stat-label {
-      font-size: 0.7rem;
-      color: var(--text);
-      text-transform: uppercase;
-    }
-    
-    /* Team */
-    .team-panel {
-      grid-column: 1 / 3;
-    }
-    
-    .team-list {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.5rem;
-    }
-    
-    .team-member {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem;
-      background: var(--panel-light);
-      border: 1px solid #222;
-      font-size: 0.8rem;
-    }
-    
-    .team-avatar {
-      width: 24px;
-      height: 24px;
-      background: var(--cyan-dim);
-      border-radius: 50%;
-    }
-    
-    .team-role {
-      font-size: 0.6rem;
-      color: var(--text);
-    }
-    
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    
-    ::-webkit-scrollbar-track {
-      background: var(--panel);
-    }
-    
-    ::-webkit-scrollbar-thumb {
-      background: var(--cyan-dim);
-    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--panel); }
+    ::-webkit-scrollbar-thumb { background: var(--cyan-dim); }
   </style>
 </head>
 <body>
@@ -403,12 +242,11 @@
     </header>
 
     <div class="dashboard">
-      <!-- Stats -->
       <div class="panel stats-panel">
         <div class="panel-title">≫ MÉTRICAS GLOBALES</div>
         <div class="stats-grid">
           <div class="stat-box">
-            <div class="stat-value">11</div>
+            <div class="stat-value">12</div>
             <div class="stat-label">Miembros</div>
           </div>
           <div class="stat-box">
@@ -426,7 +264,6 @@
         </div>
       </div>
 
-      <!-- Tool Grid -->
       <div class="panel tool-grid">
         <div class="panel-title">≫ TOOL GRID — REPOSITORIOS</div>
         <div class="repo-cards">
@@ -449,119 +286,75 @@
         </div>
       </div>
 
-      <!-- Synergy Map -->
       <div class="panel synergy-map">
         <div class="panel-title">≫ SYNERGY MAP</div>
-        <div class="map-container" id="map">
-          <!-- Nodes will be generated by JS -->
-        </div>
+        <div class="map-container" id="map"></div>
       </div>
 
-      <!-- Dev Pulse -->
       <div class="panel dev-pulse">
         <div class="panel-title">≫ DEV-PULSE — ACTIVIDAD</div>
-        <div class="pulse-feed">
-          <div class="pulse-item">
-            <div class="pulse-avatar">👑</div>
-            <div class="pulse-content">
-              <div class="pulse-author">Igor Gopkalo Streiff</div>
-              <div class="pulse-text">Iniciando sprint de Nexus Dashboard... ¡A贫!</div>
-              <div class="pulse-time">Hace 2 min</div>
-            </div>
-          </div>
-          <div class="pulse-item">
-            <div class="pulse-avatar">💻</div>
-            <div class="pulse-content">
-              <div class="pulse-author">Max Sarlija</div>
-              <div class="pulse-text">Configurando GitHub Pages para el portfolio</div>
-              <div class="pulse-time">Hace 15 min</div>
-            </div>
-          </div>
-          <div class="pulse-item">
-            <div class="pulse-avatar">🎨</div>
-            <div class="pulse-content">
-              <div class="pulse-author">Franco Ferrarello</div>
-              <div class="pulse-text">Voté por Pixel Art 👾</div>
-              <div class="pulse-time">Hace 20 min</div>
-            </div>
-          </div>
-          <div class="pulse-item">
-            <div class="pulse-avatar">🔧</div>
-            <div class="pulse-content">
-              <div class="pulse-author">Mauricio van der Wildt</div>
-              <div class="pulse-text">Texture checker funcionando - 18 bake layers detectados</div>
-              <div class="pulse-time">Hace 45 min</div>
-            </div>
-          </div>
-        </div>
+        <div class="pulse-feed" id="pulse-feed"></div>
       </div>
 
-      <!-- Team -->
       <div class="panel team-panel">
         <div class="panel-title">≫ EQUIPO CONECTADO</div>
-        <div class="team-list">
-          <div class="team-member">
-            <div class="team-avatar" style="background: var(--gold)"></div>
-            <div>
-              <div>Igor (PM)</div>
-              <div class="team-role">Online</div>
-            </div>
-          </div>
-          <div class="team-member">
-            <div class="team-avatar" style="background: var(--cyan)"></div>
-            <div>
-              <div>Max (Dev)</div>
-              <div class="team-role">Online</div>
-            </div>
-          </div>
-          <div class="team-member">
-            <div class="team-avatar" style="background: var(--cyan)"></div>
-            <div>
-              <div>Manuel (Dev)</div>
-              <div class="team-role">Online</div>
-            </div>
-          </div>
-          <div class="team-member">
-            <div class="team-avatar" style="background: var(--magenta)"></div>
-            <div>
-              <div>Mariano (TA)</div>
-              <div class="team-role">Online</div>
-            </div>
-          </div>
-          <div class="team-member">
-            <div class="team-avatar" style="background: var(--magenta)"></div>
-            <div>
-              <div>Kalil (TA)</div>
-              <div class="team-role">Online</div>
-            </div>
-          </div>
-          <div class="team-member">
-            <div class="team-avatar" style="background: var(--green)"></div>
-            <div>
-              <div>Franco (Art)</div>
-              <div class="team-role">Online</div>
-            </div>
-          </div>
+        <div class="team-list" id="team-list"></div>
+      </div>
+
+      <div class="panel activity-panel">
+        <div class="panel-title">≫ ÚLTIMA ACTIVIDAD EN GITHUB</div>
+        <div class="activity-grid" id="activity-grid">
+          <div class="activity-item"><div style="color: var(--text);">Cargando datos...</div></div>
         </div>
       </div>
     </div>
   </div>
 
   <script>
+    // Team data with GitHub usernames
+    const team = [
+      { name: 'Igor', github: 'Igor-Streiff', role: 'PM', roleType: 'pm' },
+      { name: 'Max', github: 'maxsarlija', role: 'Dev', roleType: 'dev' },
+      { name: 'Manuel', github: 'pulpt37', role: 'Dev', roleType: 'dev' },
+      { name: 'Mariano', github: 'mariano9700', role: 'TA', roleType: 'ta' },
+      { name: 'Kalil', github: 'kalil94', role: 'TA', roleType: 'ta' },
+      { name: 'Mauricio', github: 'ElkronAiken', role: 'TA', roleType: 'ta' },
+      { name: 'Facundo', github: 'facu041294', role: 'TA', roleType: 'ta' },
+      { name: 'Franco', github: 'fferrarello', role: 'Art', roleType: 'artist' },
+      { name: 'Alejandro', github: 'arteaga.rey', role: 'Art', roleType: 'artist' },
+      { name: 'Mariano P', github: 'marianopenovi', role: 'TA', roleType: 'ta' },
+    ];
+    
     // Clock
     setInterval(() => {
       document.getElementById('clock').textContent = new Date().toLocaleTimeString('es-AR');
     }, 1000);
     
-    // Generate Synergy Map nodes
+    // Generate team list
+    const teamList = document.getElementById('team-list');
+    team.forEach(member => {
+      const el = document.createElement('div');
+      el.className = 'team-member';
+      const color = member.roleType === 'pm' ? 'var(--gold)' : 
+                   member.roleType === 'dev' ? 'var(--cyan)' : 
+                   member.roleType === 'artist' ? 'var(--green)' : 'var(--magenta)';
+      el.innerHTML = `<div class="team-avatar" style="background: ${color}"></div>
+        <div>
+          <div>${member.name} (${member.role})</div>
+          <div class="team-role" id="role-${member.github}">Cargando...</div>
+        </div>`;
+      teamList.appendChild(el);
+    });
+    
+    // Generate Synergy Map
     const map = document.getElementById('map');
     const nodes = [
-      { name: 'Igor\n(PM)', x: 80, y: 50, role: 'pm' },
-      { name: 'Max\n(Dev)', x: 40, y: 150, role: 'dev' },
-      { name: 'Manuel\n(Dev)', x: 120, y: 150, role: 'dev' },
-      { name: 'Mariano\n(TA)', x: 20, y: 250, role: 'ta' },
-      { name: 'Kalil\n(TA)', x: 80, y: 250, role: 'ta' },
-      { name: 'Franco\n(Art)', x: 140, y: 250, role: 'artist' },
+      { name: 'Igor\n(PM)', x: 80, y: 30, role: 'pm' },
+      { name: 'Max\n(Dev)', x: 30, y: 120, role: 'dev' },
+      { name: 'Manuel\n(Dev)', x: 130, y: 120, role: 'dev' },
+      { name: 'Mariano\n(TA)', x: 20, y: 210, role: 'ta' },
+      { name: 'Kalil\n(TA)', x: 80, y: 210, role: 'ta' },
+      { name: 'Franco\n(Art)', x: 140, y: 210, role: 'artist' },
     ];
     
     nodes.forEach(node => {
@@ -574,31 +367,90 @@
     });
     
     // Draw connections
-    const connections = [
-      [0, 1], [0, 2], // PM to devs
-      [1, 3], [1, 4], // Max to TAs
-      [2, 5], // Manuel to artist
-      [3, 4], // TAs connected
-    ];
-    
+    const connections = [[0, 1], [0, 2], [1, 3], [1, 4], [2, 5], [3, 4]];
     connections.forEach(([from, to]) => {
       const line = document.createElement('div');
       line.className = 'connection';
-      const x1 = nodes[from].x + 30;
-      const y1 = nodes[from].y + 30;
-      const x2 = nodes[to].x + 30;
-      const y2 = nodes[to].y + 30;
-      
+      const x1 = nodes[from].x + 30, y1 = nodes[from].y + 30;
+      const x2 = nodes[to].x + 30, y2 = nodes[to].y + 30;
       const length = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
       const angle = Math.atan2(y2-y1, x2-x1) * 180 / Math.PI;
-      
       line.style.left = x1 + 'px';
       line.style.top = y1 + 'px';
       line.style.width = length + 'px';
       line.style.transform = `rotate(${angle}deg)`;
-      
       map.appendChild(line);
     });
+    
+    // Fetch GitHub activity
+    async function fetchGitHubActivity() {
+      const activityGrid = document.getElementById('activity-grid');
+      const pulseFeed = document.getElementById('pulse-feed');
+      activityGrid.innerHTML = '';
+      pulseFeed.innerHTML = '';
+      
+      for (const member of team) {
+        try {
+          const resp = await fetch(`https://api.github.com/users/${member.github}/repos?sort=updated&per_page=1`);
+          const data = await resp.json();
+          
+          if (data && data.length > 0) {
+            const repo = data[0];
+            const updated = new Date(repo.updated_at);
+            const timeAgo = getTimeAgo(updated);
+            
+            // Update team role
+            const roleEl = document.getElementById(`role-${member.github}`);
+            if (roleEl) {
+              roleEl.textContent = repo.name;
+              roleEl.style.color = 'var(--cyan)';
+            }
+            
+            // Add to activity grid
+            const activityEl = document.createElement('div');
+            activityEl.className = 'activity-item';
+            activityEl.innerHTML = `
+              <div class="activity-user">@${member.github} (${member.role})</div>
+              <div class="activity-repo">📁 ${repo.name}</div>
+              <div class="activity-desc">${repo.description || 'Sin descripción'}</div>
+              <div class="activity-time">🕐 ${timeAgo}</div>
+            `;
+            activityGrid.appendChild(activityEl);
+            
+            // Add to pulse feed
+            const pulseEl = document.createElement('div');
+            pulseEl.className = 'pulse-item';
+            const emoji = member.roleType === 'pm' ? '👑' : member.roleType === 'dev' ? '💻' : member.roleType === 'artist' ? '🎨' : '🔧';
+            pulseEl.innerHTML = `
+              <div class="pulse-avatar">${emoji}</div>
+              <div class="pulse-content">
+                <div class="pulse-author">${member.name}</div>
+                <div class="pulse-text">Actualizó: ${repo.name}</div>
+                <div class="pulse-time">${timeAgo}</div>
+              </div>
+            `;
+            pulseFeed.appendChild(pulseEl);
+          }
+        } catch (e) {
+          console.log(`Error fetching ${member.github}:`, e);
+        }
+      }
+    }
+    
+    function getTimeAgo(date) {
+      const seconds = Math.floor((new Date() - date) / 1000);
+      if (seconds < 60) return 'Hace un momento';
+      const minutes = Math.floor(seconds / 60);
+      if (minutes < 60) return `Hace ${minutes} min`;
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) return `Hace ${hours} h`;
+      const days = Math.floor(hours / 24);
+      return `Hace ${days} días`;
+    }
+    
+    // Load on start
+    fetchGitHubActivity();
+    setInterval(fetchGitHubActivity, 60000); // Refresh every minute
   </script>
 </body>
 </html>
