@@ -1,0 +1,140 @@
+{
+  "name": "Nexus Dashboard",
+  "version": "1.0.0",
+  "description": "Dashboard industrial para centralizar el desarrollo técnico del equipo",
+
+  "team": {
+    "members": [
+      {
+        "id": "pm",
+        "name": "Igor Gopkalo Streiff",
+        "role": "Project Manager",
+        "github": "heavy_machine",
+        "avatar": ""
+      },
+      {
+        "id": "dev1",
+        "name": "Max Sarlija",
+        "role": "Developer",
+        "github": "maxsarlija",
+        "avatar": ""
+      },
+      {
+        "id": "dev2",
+        "name": "Manuel Mejia",
+        "role": "Developer",
+        "github": "pulpt37",
+        "avatar": ""
+      },
+      {
+        "id": "ta1",
+        "name": "Mariano Zulueta",
+        "role": "Tech Artist",
+        "github": "mariano9700",
+        "avatar": ""
+      },
+      {
+        "id": "ta2",
+        "name": "Kalil Fiat",
+        "role": "Tech Artist",
+        "github": "kalil94",
+        "avatar": ""
+      },
+      {
+        "id": "ta3",
+        "name": "Manuel Castellani",
+        "role": "Tech Artist",
+        "github": "manucastellani",
+        "avatar": ""
+      },
+      {
+        "id": "ta4",
+        "name": "Mauricio van der Wildt",
+        "role": "Tech Artist",
+        "github": "elkronaiken",
+        "avatar": ""
+      },
+      {
+        "id": "ta5",
+        "name": "Facundo Villarreal",
+        "role": "Tech Artist",
+        "github": "facu041294",
+        "avatar": ""
+      },
+      {
+        "id": "artist1",
+        "name": "Franco Ferrarello",
+        "role": "Artist",
+        "github": "fartvader",
+        "avatar": ""
+      },
+      {
+        "id": "artist2",
+        "name": "Alejandro Arteaga",
+        "role": "Artist",
+        "github": "arteaga.rey",
+        "avatar": ""
+      }
+    ]
+  },
+
+  "repos": [
+    {
+      "id": "theoffice",
+      "name": "theoffice",
+      "owner": "maxsarlijagit",
+      "description": "Oficina virtual 2D multiplayer dentro de Discord",
+      "status": "alpha",
+      "tags": ["discord", "game", "multiplayer"],
+      "assignedTo": ["dev1", "dev2"]
+    },
+    {
+      "id": "dashboard",
+      "name": "dashboard",
+      "owner": "maxsarlijagit",
+      "description": "Nexus Dashboard - Visualización de equipos",
+      "status": "planning",
+      "tags": ["nextjs", "visualization"],
+      "assignedTo": ["pm"]
+    }
+  ],
+
+  "synergy": {
+    "connections": [
+      {
+        "from": "dev1",
+        "to": "ta1",
+        "type": "technical",
+        "description": "Integración de assets en tiempo real"
+      },
+      {
+        "from": "dev1",
+        "to": "artist1",
+        "type": "creative",
+        "description": "Feedback visual de UI/UX"
+      },
+      {
+        "from": "ta1",
+        "to": "ta2",
+        "type": "pipeline",
+        "description": "Comparten flujos de trabajo en Maya"
+      }
+    ]
+  },
+
+  "ui": {
+    "theme": "dark",
+    "style": "industrial",
+    "accentColor": "#00ff88",
+    "backgroundColor": "#0a0a0a",
+    "cardBackground": "#1a1a1a"
+  },
+
+  "github": {
+    "apiUrl": "https://api.github.com",
+    "token": "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",
+    "repo": "maxsarlijagit/campus",
+    "rateLimit": 5000,
+    "cacheTime": 300
+  }
+}
