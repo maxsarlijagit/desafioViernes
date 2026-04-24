@@ -20,6 +20,7 @@
       --green: #00ff88;
       --text: #a0a0b0;
       --text-bright: #e0e0f0;
+      --selected: #ffaa00;
     }
     
     body {
@@ -63,6 +64,11 @@
       color: var(--cyan);
       text-shadow: 0 0 20px var(--cyan);
       letter-spacing: 4px;
+    }
+    
+    .selected-project {
+      font-size: 0.9rem;
+      color: var(--selected);
     }
     
     .status-bar { display: flex; gap: 2rem; font-size: 0.8rem; }
@@ -114,15 +120,33 @@
     
     .repo-card {
       background: var(--panel-light);
-      border: 1px solid #333;
+      border: 2px solid #333;
       padding: 1rem;
       cursor: pointer;
       transition: all 0.3s;
+      position: relative;
     }
     
     .repo-card:hover {
       border-color: var(--cyan);
       box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+    }
+    
+    .repo-card.selected {
+      border-color: var(--selected);
+      box-shadow: 0 0 20px rgba(255, 170, 0, 0.3);
+    }
+    
+    .repo-card.selected::after {
+      content: '✓ SELECCIONADO';
+      position: absolute;
+      top: -10px;
+      right: 10px;
+      background: var(--selected);
+      color: var(--void);
+      font-size: 0.6rem;
+      padding: 2px 8px;
+      font-weight: bold;
     }
     
     .repo-name { font-family: 'Orbitron', sans-serif; font-size: 0.9rem; color: var(--text-bright); margin-bottom: 0.5rem; }
@@ -146,33 +170,42 @@
     
     .node {
       position: absolute;
-      width: 60px;
-      height: 60px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
       background: var(--panel);
-      border: 2px solid var(--cyan);
+      border: 3px solid var(--cyan);
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: all 0.3s;
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       color: var(--text-bright);
       text-align: center;
     }
     
-    .node:hover { transform: scale(1.2); border-color: var(--magenta); box-shadow: 0 0 20px var(--magenta); }
+    .node:hover { transform: scale(1.15); border-color: var(--magenta); box-shadow: 0 0 25px var(--magenta); z-index: 10; }
     .node-pm { border-color: var(--gold); }
     .node-dev { border-color: var(--cyan); }
     .node-ta { border-color: var(--magenta); }
     .node-artist { border-color: var(--green); }
+    
+    .node .role-badge {
+      font-size: 0.45rem;
+      padding: 1px 4px;
+      background: rgba(0,0,0,0.5);
+      border-radius: 3px;
+      margin-top: 2px;
+    }
     
     .connection {
       position: absolute;
       height: 2px;
       background: linear-gradient(90deg, var(--cyan-dim), var(--magenta));
       transform-origin: left center;
-      opacity: 0.5;
+      opacity: 0.6;
     }
     
     .dev-pulse { grid-column: 1 / 3; }
@@ -219,6 +252,7 @@
     .activity-repo { font-size: 0.7rem; color: var(--text-bright); }
     .activity-desc { font-size: 0.65rem; color: var(--text); margin-top: 0.25rem; }
     .activity-time { font-size: 0.55rem; color: #555; margin-top: 0.25rem; }
+    .activity-commit { font-size: 0.6rem; color: var(--green); margin-top: 0.25rem; }
     
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--panel); }
@@ -229,6 +263,7 @@
   <div class="container">
     <header>
       <div class="logo">⚡ NEXUS DASHBOARD</div>
+      <div class="selected-project" id="selected-project">☐ Ningun proyecto seleccionado</div>
       <div class="status-bar">
         <div class="status-item">
           <span class="status-dot"></span>
@@ -265,9 +300,9 @@
       </div>
 
       <div class="panel tool-grid">
-        <div class="panel-title">≫ TOOL GRID — REPOSITORIOS</div>
-        <div class="repo-cards">
-          <div class="repo-card">
+        <div class="panel-title">≫ TOOL GRID — REPOSITORIOS (Click para seleccionar)</div>
+        <div class="repo-cards" id="repo-cards">
+          <div class="repo-card" data-project="theoffice">
             <div class="repo-name">THE OFFICE</div>
             <div class="repo-desc">Oficina virtual 2D multiplayer dentro de Discord</div>
             <div class="repo-meta">
@@ -275,7 +310,7 @@
               <span class="repo-status status-alpha">ALPHA</span>
             </div>
           </div>
-          <div class="repo-card">
+          <div class="repo-card" data-project="nexus">
             <div class="repo-name">NEXUS DASHBOARD</div>
             <div class="repo-desc">Centro de control para visualizar sinergias del equipo</div>
             <div class="repo-meta">
@@ -292,7 +327,7 @@
       </div>
 
       <div class="panel dev-pulse">
-        <div class="panel-title">≫ DEV-PULSE — ACTIVIDAD</div>
+        <div class="panel-title">≫ DEV-PULSE — ÚLTIMO COMMIT</div>
         <div class="pulse-feed" id="pulse-feed"></div>
       </div>
 
@@ -302,7 +337,7 @@
       </div>
 
       <div class="panel activity-panel">
-        <div class="panel-title">≫ ÚLTIMA ACTIVIDAD EN GITHUB</div>
+        <div class="panel-title">≫ ÚLTIMO COMMIT EN GITHUB</div>
         <div class="activity-grid" id="activity-grid">
           <div class="activity-item"><div style="color: var(--text);">Cargando datos...</div></div>
         </div>
@@ -311,78 +346,161 @@
   </div>
 
   <script>
-    // Team data with GitHub usernames
+    // Project-specific role mappings
+    const projectRoles = {
+      theoffice: {
+        'maxsarlija': 'Dev',
+        'pulpt37': 'Dev',
+        'mariano9700': 'TA',
+        'kalil94': 'TA',
+        'manucastellani': 'TA',
+        'ElkronAiken': 'TA',
+        'facu041294': 'TA',
+        'fferrarello': 'Artist',
+        'arteaga.rey': 'Artist',
+        'Igor-Streiff': 'PM',
+        'marianopenovi': 'TA'
+      },
+      nexus: {
+        'Igor-Streiff': 'PM',
+        'maxsarlija': 'Dev',
+        'pulpt37': 'Dev',
+        'mariano9700': 'TA',
+        'kalil94': 'Artist',
+        'manucastellani': 'TA',
+        'ElkronAiken': 'TA',
+        'facu041294': 'TA',
+        'fferrarello': 'Artist',
+        'arteaga.rey': 'Artist',
+        'marianopenovi': 'TA'
+      }
+    };
+    
+    // Project-specific connections
+    const projectConnections = {
+      theoffice: [
+        [0, 1], [0, 2],  // PM to devs
+        [1, 3], [1, 4], [1, 5], // Max to TAs
+        [2, 6], [2, 7], // Manuel to artists
+        [3, 4], [4, 5], // TAs connected
+      ],
+      nexus: [
+        [0, 1], [0, 2],  // PM to devs
+        [1, 3], [2, 3], // Both to TA
+        [3, 4], [3, 5], // TA to more
+        [4, 6], [5, 7], // Artists connected
+      ]
+    };
+    
+    // Team data
     const team = [
-      { name: 'Igor', github: 'Igor-Streiff', role: 'PM', roleType: 'pm' },
-      { name: 'Max', github: 'maxsarlija', role: 'Dev', roleType: 'dev' },
-      { name: 'Manuel', github: 'pulpt37', role: 'Dev', roleType: 'dev' },
-      { name: 'Mariano', github: 'mariano9700', role: 'TA', roleType: 'ta' },
-      { name: 'Kalil', github: 'kalil94', role: 'TA', roleType: 'ta' },
-      { name: 'Mauricio', github: 'ElkronAiken', role: 'TA', roleType: 'ta' },
-      { name: 'Facundo', github: 'facu041294', role: 'TA', roleType: 'ta' },
-      { name: 'Franco', github: 'fferrarello', role: 'Art', roleType: 'artist' },
-      { name: 'Alejandro', github: 'arteaga.rey', role: 'Art', roleType: 'artist' },
-      { name: 'Mariano P', github: 'marianopenovi', role: 'TA', roleType: 'ta' },
+      { name: 'Igor', github: 'Igor-Streiff', baseRole: 'PM' },
+      { name: 'Max', github: 'maxsarlija', baseRole: 'Dev' },
+      { name: 'Manuel', github: 'pulpt37', baseRole: 'Dev' },
+      { name: 'Mariano', github: 'mariano9700', baseRole: 'TA' },
+      { name: 'Kalil', github: 'kalil94', baseRole: 'TA' },
+      { name: 'Mauricio', github: 'ElkronAiken', baseRole: 'TA' },
+      { name: 'Facundo', github: 'facu041294', baseRole: 'TA' },
+      { name: 'Franco', github: 'fferrarello', baseRole: 'Artist' },
+      { name: 'Alejandro', github: 'arteaga.rey', baseRole: 'Artist' },
+      { name: 'Mariano P', github: 'marianopenovi', baseRole: 'TA' },
     ];
+    
+    let selectedProject = null;
     
     // Clock
     setInterval(() => {
       document.getElementById('clock').textContent = new Date().toLocaleTimeString('es-AR');
     }, 1000);
     
+    // Repo card selection
+    document.querySelectorAll('.repo-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.repo-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        selectedProject = card.dataset.project;
+        
+        const projectNames = { theoffice: 'THE OFFICE', nexus: 'NEXUS DASHBOARD' };
+        document.getElementById('selected-project').textContent = '☐ ' + projectNames[selectedProject];
+        
+        updateSynergyMap(selectedProject);
+        updateTeamRoles(selectedProject);
+      });
+    });
+    
+    // Update synergy map based on project
+    function updateSynergyMap(project) {
+      const map = document.getElementById('map');
+      map.innerHTML = '';
+      
+      const roles = projectRoles[project] || {};
+      const connections = projectConnections[project] || [];
+      
+      const nodes = team.map((m, i) => ({
+        name: m.name.split(' ')[0],
+        x: 30 + (i % 4) * 40,
+        y: 30 + Math.floor(i / 4) * 80,
+        role: roles[m.github]?.toLowerCase() || m.baseRole.toLowerCase()
+      }));
+      
+      nodes.forEach(node => {
+        const el = document.createElement('div');
+        el.className = `node node-${node.role}`;
+        el.style.left = node.x + 'px';
+        el.style.top = node.y + 'px';
+        el.innerHTML = `<div>${node.name}</div><div class="role-badge">${node.role.toUpperCase()}</div>`;
+        map.appendChild(el);
+      });
+      
+      connections.forEach(([from, to]) => {
+        if (nodes[from] && nodes[to]) {
+          const line = document.createElement('div');
+          line.className = 'connection';
+          const x1 = nodes[from].x + 35, y1 = nodes[from].y + 35;
+          const x2 = nodes[to].x + 35, y2 = nodes[to].y + 35;
+          const length = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
+          const angle = Math.atan2(y2-y1, x2-x1) * 180 / Math.PI;
+          line.style.left = x1 + 'px';
+          line.style.top = y1 + 'px';
+          line.style.width = length + 'px';
+          line.style.transform = `rotate(${angle}deg)`;
+          map.appendChild(line);
+        }
+      });
+    }
+    
+    // Update team roles display
+    function updateTeamRoles(project) {
+      const roles = projectRoles[project] || {};
+      team.forEach(member => {
+        const roleEl = document.getElementById(`role-${member.github}`);
+        if (roleEl) {
+          roleEl.textContent = roles[member.github] || member.baseRole;
+          roleEl.style.color = 'var(--cyan)';
+        }
+      });
+    }
+    
     // Generate team list
     const teamList = document.getElementById('team-list');
     team.forEach(member => {
       const el = document.createElement('div');
       el.className = 'team-member';
-      const color = member.roleType === 'pm' ? 'var(--gold)' : 
-                   member.roleType === 'dev' ? 'var(--cyan)' : 
-                   member.roleType === 'artist' ? 'var(--green)' : 'var(--magenta)';
+      const color = member.baseRole === 'PM' ? 'var(--gold)' : 
+                   member.baseRole === 'Dev' ? 'var(--cyan)' : 
+                   member.baseRole === 'Artist' ? 'var(--green)' : 'var(--magenta)';
       el.innerHTML = `<div class="team-avatar" style="background: ${color}"></div>
         <div>
-          <div>${member.name} (${member.role})</div>
-          <div class="team-role" id="role-${member.github}">Cargando...</div>
+          <div>${member.name}</div>
+          <div class="team-role" id="role-${member.github}">${member.baseRole}</div>
         </div>`;
       teamList.appendChild(el);
     });
     
-    // Generate Synergy Map
-    const map = document.getElementById('map');
-    const nodes = [
-      { name: 'Igor\n(PM)', x: 80, y: 30, role: 'pm' },
-      { name: 'Max\n(Dev)', x: 30, y: 120, role: 'dev' },
-      { name: 'Manuel\n(Dev)', x: 130, y: 120, role: 'dev' },
-      { name: 'Mariano\n(TA)', x: 20, y: 210, role: 'ta' },
-      { name: 'Kalil\n(TA)', x: 80, y: 210, role: 'ta' },
-      { name: 'Franco\n(Art)', x: 140, y: 210, role: 'artist' },
-    ];
+    // Initialize with default positions
+    updateSynergyMap(null);
     
-    nodes.forEach(node => {
-      const el = document.createElement('div');
-      el.className = `node node-${node.role}`;
-      el.style.left = node.x + 'px';
-      el.style.top = node.y + 'px';
-      el.textContent = node.name;
-      map.appendChild(el);
-    });
-    
-    // Draw connections
-    const connections = [[0, 1], [0, 2], [1, 3], [1, 4], [2, 5], [3, 4]];
-    connections.forEach(([from, to]) => {
-      const line = document.createElement('div');
-      line.className = 'connection';
-      const x1 = nodes[from].x + 30, y1 = nodes[from].y + 30;
-      const x2 = nodes[to].x + 30, y2 = nodes[to].y + 30;
-      const length = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
-      const angle = Math.atan2(y2-y1, x2-x1) * 180 / Math.PI;
-      line.style.left = x1 + 'px';
-      line.style.top = y1 + 'px';
-      line.style.width = length + 'px';
-      line.style.transform = `rotate(${angle}deg)`;
-      map.appendChild(line);
-    });
-    
-    // Fetch GitHub activity
+    // Fetch GitHub commits
     async function fetchGitHubActivity() {
       const activityGrid = document.getElementById('activity-grid');
       const pulseFeed = document.getElementById('pulse-feed');
@@ -391,46 +509,57 @@
       
       for (const member of team) {
         try {
-          const resp = await fetch(`https://api.github.com/users/${member.github}/repos?sort=updated&per_page=1`);
-          const data = await resp.json();
+          // Get user events (includes pushes)
+          const eventsResp = await fetch(`https://api.github.com/users/${member.github}/events?per_page=5`);
+          const events = await eventsResp.json();
           
-          if (data && data.length > 0) {
-            const repo = data[0];
-            const updated = new Date(repo.updated_at);
-            const timeAgo = getTimeAgo(updated);
-            
-            // Update team role
-            const roleEl = document.getElementById(`role-${member.github}`);
-            if (roleEl) {
-              roleEl.textContent = repo.name;
-              roleEl.style.color = 'var(--cyan)';
-            }
-            
-            // Add to activity grid
-            const activityEl = document.createElement('div');
-            activityEl.className = 'activity-item';
-            activityEl.innerHTML = `
-              <div class="activity-user">@${member.github} (${member.role})</div>
-              <div class="activity-repo">📁 ${repo.name}</div>
-              <div class="activity-desc">${repo.description || 'Sin descripción'}</div>
-              <div class="activity-time">🕐 ${timeAgo}</div>
-            `;
-            activityGrid.appendChild(activityEl);
-            
-            // Add to pulse feed
-            const pulseEl = document.createElement('div');
-            pulseEl.className = 'pulse-item';
-            const emoji = member.roleType === 'pm' ? '👑' : member.roleType === 'dev' ? '💻' : member.roleType === 'artist' ? '🎨' : '🔧';
-            pulseEl.innerHTML = `
-              <div class="pulse-avatar">${emoji}</div>
-              <div class="pulse-content">
-                <div class="pulse-author">${member.name}</div>
-                <div class="pulse-text">Actualizó: ${repo.name}</div>
-                <div class="pulse-time">${timeAgo}</div>
-              </div>
-            `;
-            pulseFeed.appendChild(pulseEl);
+          // Find push event
+          const pushEvent = events?.find(e => e.type === 'PushEvent');
+          
+          let repoName = 'Sin actividad';
+          let commitMsg = '';
+          let timeAgo = 'Nunca';
+          
+          if (pushEvent) {
+            repoName = pushEvent.repo.name;
+            const commit = pushEvent.payload.commits?.[0];
+            commitMsg = commit?.message?.substring(0, 60) || 'Commit';
+            const eventDate = new Date(pushEvent.created_at);
+            timeAgo = getTimeAgo(eventDate);
           }
+          
+          // Update team role
+          const roleEl = document.getElementById(`role-${member.github}`);
+          if (roleEl && selectedProject) {
+            const roles = projectRoles[selectedProject];
+            roleEl.textContent = roles?.[member.github] || member.baseRole;
+          }
+          
+          // Add to activity grid
+          const activityEl = document.createElement('div');
+          activityEl.className = 'activity-item';
+          activityEl.innerHTML = `
+            <div class="activity-user">@${member.github} (${member.baseRole})</div>
+            <div class="activity-repo">📁 ${repoName}</div>
+            <div class="activity-commit">💬 ${commitMsg}</div>
+            <div class="activity-time">🕐 ${timeAgo}</div>
+          `;
+          activityGrid.appendChild(activityEl);
+          
+          // Add to pulse feed
+          const pulseEl = document.createElement('div');
+          pulseEl.className = 'pulse-item';
+          const emoji = member.baseRole === 'PM' ? '👑' : member.baseRole === 'Dev' ? '💻' : member.baseRole === 'Artist' ? '🎨' : '🔧';
+          pulseEl.innerHTML = `
+            <div class="pulse-avatar">${emoji}</div>
+            <div class="pulse-content">
+              <div class="pulse-author">${member.name}</div>
+              <div class="pulse-text">💬 ${commitMsg}</div>
+              <div class="pulse-time">${timeAgo} — ${repoName}</div>
+            </div>
+          `;
+          pulseFeed.appendChild(pulseEl);
+          
         } catch (e) {
           console.log(`Error fetching ${member.github}:`, e);
         }
@@ -450,7 +579,7 @@
     
     // Load on start
     fetchGitHubActivity();
-    setInterval(fetchGitHubActivity, 60000); // Refresh every minute
+    setInterval(fetchGitHubActivity, 60000);
   </script>
 </body>
 </html>
