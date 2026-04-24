@@ -344,20 +344,14 @@
   <div class="mascot-container-left">
     <div class="mascot-bubble" id="bubble-aaron">¡Qué onda! 😎</div>
     <svg class="mascot pixel-pet" id="mascot-aaron" viewBox="0 0 16 16" onclick="interactAaron()">
-      <!-- Pixel art owl (sabio) -->
-      <rect x="5" y="2" width="6" height="5" fill="#8B4513"/>
-      <rect x="4" y="3" width="1" height="3" fill="#8B4513"/>
-      <rect x="11" y="3" width="1" height="3" fill="#8B4513"/>
-      <rect x="5" y="3" width="2" height="2" fill="#ffff00"/>
-      <rect x="9" y="3" width="2" height="2" fill="#ffff00"/>
-      <rect x="5" y="5" width="1" height="1" fill="#0d0d0d"/>
-      <rect x="10" y="5" width="1" height="1" fill="#0d0d0d"/>
-      <rect x="6" y="7" width="4" height="1" fill="#ff6600"/>
-      <rect x="4" y="8" width="8" height="5" fill="#8B4513"/>
-      <rect x="3" y="9" width="2" height="3" fill="#8B4513"/>
-      <rect x="11" y="9" width="2" height="3" fill="#8B4513"/>
-      <rect x="5" y="13" width="2" height="2" fill="#8B4513"/>
-      <rect x="9" y="13" width="2" height="2" fill="#8B4513"/>
+      <!-- Pixel art AREPA -->
+      <rect x="3" y="6" width="10" height="8" fill="#D4A574" rx="1"/>
+      <rect x="4" y="5" width="8" height="2" fill="#D4A574"/>
+      <rect x="2" y="7" width="1" height="6" fill="#D4A574"/>
+      <rect x="13" y="7" width="1" height="6" fill="#D4A574"/>
+      <rect x="5" y="8" width="6" height="4" fill="#8B4513"/>
+      <rect x="4" y="9" width="1" height="2" fill="#D4A574"/>
+      <rect x="11" y="9" width="1" height="2" fill="#D4A574"/>
     </svg>
   </div>
 
@@ -572,7 +566,9 @@
         "¡Buena esa! 🎮",
         "¿Querés ayuda con algo? 🤔",
         "¡Está interesante esto! 👀",
-        "¡Dale, a programar! 💻"
+        "¡Dale, a programar! 💻",
+        "¡Te falta arepa! 🫓",
+        "¡Una arepa con todo! 🥘"
       ];
       const phrase = phrasesAaron[Math.floor(Math.random() * phrasesAaron.length)];
       document.getElementById('bubble-aaron').textContent = phrase;
