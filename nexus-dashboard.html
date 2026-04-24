@@ -550,7 +550,15 @@
           `;
           grid.appendChild(el);
         } catch(e) {
-          grid.innerHTML += `<div class="activity-item">${m.name}: Error</div>`;
+          const el = document.createElement('div');
+          el.className = 'activity-item';
+          el.innerHTML = `
+            <div class="activity-user">@${m.github}</div>
+            <div class="activity-repo">—</div>
+            <div class="activity-commit">Sin actividad</div>
+            <div class="activity-time">—</div>
+          `;
+          grid.appendChild(el);
         }
       }
     }
