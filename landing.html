@@ -322,7 +322,7 @@
   </style>
 </head>
 <body>
-  <!-- MASCOTE INTERACTIVO -->
+  <!-- MASCOTE INTERACTIVO (Gogenzo) -->
   <div class="mascot-container">
     <div class="mascot-bubble" id="bubble">¡Che, hola! 👋</div>
     <svg class="mascot pixel-pet" id="mascot" viewBox="0 0 16 16" onclick="interact()">
@@ -340,6 +340,45 @@
     </svg>
   </div>
 
+  <!-- MASCOTE AARON (izquierda) -->
+  <div class="mascot-container-left">
+    <div class="mascot-bubble" id="bubble-aaron">¡Qué onda! 😎</div>
+    <svg class="mascot pixel-pet" id="mascot-aaron" viewBox="0 0 16 16" onclick="interactAaron()">
+      <!-- Pixel art owl (sabio) -->
+      <rect x="5" y="2" width="6" height="5" fill="#8B4513"/>
+      <rect x="4" y="3" width="1" height="3" fill="#8B4513"/>
+      <rect x="11" y="3" width="1" height="3" fill="#8B4513"/>
+      <rect x="5" y="3" width="2" height="2" fill="#ffff00"/>
+      <rect x="9" y="3" width="2" height="2" fill="#ffff00"/>
+      <rect x="5" y="5" width="1" height="1" fill="#0d0d0d"/>
+      <rect x="10" y="5" width="1" height="1" fill="#0d0d0d"/>
+      <rect x="6" y="7" width="4" height="1" fill="#ff6600"/>
+      <rect x="4" y="8" width="8" height="5" fill="#8B4513"/>
+      <rect x="3" y="9" width="2" height="3" fill="#8B4513"/>
+      <rect x="11" y="9" width="2" height="3" fill="#8B4513"/>
+      <rect x="5" y="13" width="2" height="2" fill="#8B4513"/>
+      <rect x="9" y="13" width="2" height="2" fill="#8B4513"/>
+    </svg>
+  </div>
+
+  <style>
+    .mascot-container-left {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 1000;
+    }
+    .mascot-container-left .mascot-bubble {
+      bottom: 90px;
+      left: 0;
+      right: auto;
+    }
+    .mascot-container-left .mascot-bubble::after {
+      left: 30px;
+      right: auto;
+    }
+  </style>
+
   <div class="container">
     <header>
       <h1>DESAFÍO VIERNES</h1>
@@ -347,7 +386,7 @@
       <div class="pixel-divider"></div>
       <div class="stats">
         <div class="stat">
-          <div class="stat-number">11</div>
+          <div class="stat-number">12</div>
           <div class="stat-label">INTEGRANTES</div>
         </div>
         <div class="stat">
@@ -413,6 +452,11 @@
           <div class="member-name">Alejandro Arteaga</div>
           <div class="member-role">Artist</div>
           <div class="member-github"><a href="https://github.com/arteaga.rey" target="_blank">@arteaga.rey</a></div>
+        </div>
+        <div class="member-card">
+          <div class="member-name">Aaron Moreno</div>
+          <div class="member-role">Tech Artist</div>
+          <div class="member-github"><a href="#" target="_blank">@aaronmoreno</a></div>
         </div>
         <div class="member-card">
           <div class="member-name">Mariano Penovi</div>
@@ -517,6 +561,26 @@
         }, 4000);
       }
     }, 10000);
+    
+    // Aaron mascot interaction
+    function interactAaron() {
+      const phrasesAaron = [
+        "¡Qué onda! 😎",
+        "¡Buen proyecto! 🔥",
+        "¿Necesitás una mano? ✋",
+        "¡Vamos que se puede! 💪",
+        "¡Buena esa! 🎮",
+        "¿Querés ayuda con algo? 🤔",
+        "¡Está interesante esto! 👀",
+        "¡Dale, a programar! 💻"
+      ];
+      const phrase = phrasesAaron[Math.floor(Math.random() * phrasesAaron.length)];
+      document.getElementById('bubble-aaron').textContent = phrase;
+      document.getElementById('bubble-aaron').classList.add('show');
+      setTimeout(() => {
+        document.getElementById('bubble-aaron').classList.remove('show');
+      }, 3000);
+    }
   </script>
 </body>
 </html>
